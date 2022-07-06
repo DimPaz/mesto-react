@@ -1,8 +1,19 @@
-function Card({ name, link, count }) {
+function Card({ card, name, link, count, onCardClick }) {
+  function handleClick() {
+    {
+      onCardClick(card);
+    }
+  }
+
   return (
     <>
       <article className="element">
-        <img className="element__picture" src={link} alt={name} />
+        <img
+          className="element__picture"
+          src={link}
+          alt={name}
+          onClick={handleClick}
+        />
         <div className="element__group">
           <button
             className="element__trash"

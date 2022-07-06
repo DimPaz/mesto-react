@@ -1,4 +1,4 @@
-import { useState, useEffect  } from "react";
+import { useState, useEffect } from "react";
 
 import Header from "./Header";
 import Main from "./Main";
@@ -12,11 +12,13 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isImageCardPopupOpen, setImageCardPopupOpen] = useState(false);
 
   const [userName, setUserName] = useState([]);
   const [userDescription, setUserDescription] = useState([]);
   const [userAvatar, setUserAvatar] = useState([]);
   const [cards, setCards] = useState([]);
+  const [selectedCard, setSelectedCard] = useState([]);
 
   useEffect(() => {
     api.getAllData().then(([data, user]) => {
@@ -29,23 +31,31 @@ function App() {
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
-    console.log("Не дави на аватар!");
+    // console.log("Не дави на аватар!");
   }
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
-    console.log("Не дави на профиль!");
+    // console.log("Не дави на профиль!");
   }
 
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpen(true);
-    console.log("Не дави на карточку!");
+    // console.log("Не дави на карточку!");
   }
+
+  function handleCardClick(card) {
+    setSelectedCard(card);
+    setImageCardPopupOpen(true);
+    // console.log("Не дави на фотку!");
+  }
+
   function closeAllPopups() {
-    console.log("закрыть попап");
+    // console.log("закрыть попап");
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setImageCardPopupOpen(false);
   }
 
   return (
@@ -56,10 +66,12 @@ function App() {
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
           onEditAvatar={handleEditAvatarClick}
+          onCardClick={handleCardClick}
           userAvatar={userAvatar}
           userName={userName}
           userDescription={userDescription}
           cards={cards}
+          // selectedCard={getSelectedCard}
         />
 
         <Footer />
@@ -168,7 +180,11 @@ function App() {
           </label>
         </PopupWithForm>
 
-        <ImagePopup />
+        <ImagePopup
+          isOpen={isImageCardPopupOpen}
+          onClose={closeAllPopups}
+          selectedCard={selectedCard}
+        />
       </div>
     </>
   );

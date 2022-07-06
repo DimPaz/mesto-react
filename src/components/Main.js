@@ -4,6 +4,7 @@ function Main({
   onEditAvatar,
   onEditProfile,
   onAddPlace,
+  onCardClick,
   userAvatar,
   userName,
   userDescription,
@@ -48,9 +49,11 @@ function Main({
             return (
               <Card
                 key={item._id}
+                card={item}
                 name={item.name}
                 link={item.link}
                 count={item.likes.length}
+                onCardClick={onCardClick}
               />
             );
           })}
