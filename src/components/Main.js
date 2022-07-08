@@ -1,26 +1,34 @@
+import { useState, useEffect } from "react";
+
 import Card from "./Card";
+import api from "../utils/Api.js";
 
 function Main({
   onEditAvatar,
   onEditProfile,
   onAddPlace,
   onCardClick,
-  userAvatar,
-  userName,
-  userDescription,
-  cards,
+  textSabmitBtn,
 }) {
-  // console.log(cards)
+  const [userName, setUserName] = useState([]);
+  const [userDescription, setUserDescription] = useState([]);
+  const [userAvatar, setUserAvatar] = useState([]);
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    api.getAllData().then(([data, user]) => {
+      setUserName(user.name);
+      setUserDescription(user.about);
+      setUserAvatar(user.avatar);
+      setCards(data);
+    });
+  }, []);
+
   return (
     <>
       <main className="main">
         <section className="profile">
-          <img
-            className="profile__avatar"
-            // src="<%=require('../images/avatar/avatar.jpg')%>"
-            src={userAvatar}
-            alt="фото"
-          />
+          <img className="profile__avatar" src={userAvatar} alt="фото" />
 
           <button
             className="profile__avatar-btn"
@@ -54,6 +62,7 @@ function Main({
                 link={item.link}
                 count={item.likes.length}
                 onCardClick={onCardClick}
+                textSabmitBtn={textSabmitBtn}
               />
             );
           })}

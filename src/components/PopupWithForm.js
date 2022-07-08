@@ -1,4 +1,4 @@
-function PopupWithForm({ name, title, children, isOpen, onClose }) {
+function PopupWithForm({ name, title, children, isOpen, onClose, textSabmitBtn }) {
  
   function closePopupOnOverlay(event) {
     if (event.target === event.currentTarget) {
@@ -31,7 +31,7 @@ function PopupWithForm({ name, title, children, isOpen, onClose }) {
             <h3 className="popup__title">{title}</h3>
             {children}
             <button className="popup__save-btn" type="submit" name="Сохранить">
-              Сохранить
+              {textSabmitBtn}
             </button>
           </form>
         </div>

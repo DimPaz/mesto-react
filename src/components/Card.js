@@ -16,7 +16,7 @@ function Card({ card, name, link, count, onCardClick }) {
         />
         <div className="element__group">
           <button
-            className="element__trash"
+            className="element__trash element__trash_visible"
             type="button"
             aria-label="Убрать в корзину"
           ></button>
