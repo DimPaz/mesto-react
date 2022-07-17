@@ -7,9 +7,9 @@ import {
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import PopupWithForm from "./PopupWithForm";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
+import AddPlacePopup from "./AddPlacePopup";
 import ImagePopup from "./ImagePopup";
 import api from "../utils/Api.js";
 
@@ -119,6 +119,18 @@ function App() {
       });
   }
 
+  function handleAddPlaceSubmit({ name, link }) {
+    api
+      .addCard({ name, link })
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   return (
     <>
       <CurrentUserContext.Provider value={currentUser}>
@@ -150,45 +162,11 @@ function App() {
             />
 
             {/* карта */}
-            <PopupWithForm
-              title="Новое место"
-              name="card"
+            <AddPlacePopup
               isOpen={isAddPlacePopupOpen}
               onClose={closeAllPopups}
-              textSabmitBtn={"Создать"}
-            >
-              <label className="form__field">
-                <input
-                  id="signature-input"
-                  className="popup__text popup__text_input_signature form__input"
-                  type="text"
-                  name="name"
-                  placeholder="Название"
-                  minLength="2"
-                  maxLength="30"
-                  required
-                />
-                <span
-                  id="signature-input-error"
-                  className="form__input-error"
-                ></span>
-              </label>
-              <label className="form__field">
-                <input
-                  id="link-image-input"
-                  className="popup__text popup__text_input_image form__input"
-                  type="url"
-                  name="link"
-                  placeholder="Ссылка на картинку"
-                  // value={""}
-                  required
-                />
-                <span
-                  id="link-image-input-error"
-                  className="form__input-error"
-                ></span>
-              </label>
-            </PopupWithForm>
+              onAddPlace={handleAddPlaceSubmit}
+            />
 
             <ImagePopup
               isOpen={isImageCardPopupOpen}

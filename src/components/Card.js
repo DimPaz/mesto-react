@@ -1,4 +1,4 @@
-import React from "react";
+import { useContext } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function Card({
@@ -10,7 +10,7 @@ function Card({
   onCardLike,
   onCardClick,
 }) {
-  const currentUser = React.useContext(CurrentUserContext);
+  const currentUser = useContext(CurrentUserContext);
 
   // отображение корзинки
   const isOwn = card.owner._id === currentUser._id;

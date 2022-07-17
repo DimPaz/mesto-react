@@ -62,10 +62,10 @@ class Api {
   }
 
   //запрос пост для создания карточки
-  addCard(card) {
+  addCard({ name, link }) {
     const newCard = {
-      name: card.name,
-      link: card.link,
+      name: name,
+      link: link,
     };
     return fetch(`${this._url}/cards/`, {
       method: "POST",
@@ -84,7 +84,6 @@ class Api {
 
   //отправить PUT-запрос лайка
   addLike(likeId) {
-    console.log("добавить");
     return fetch(`${this._url}/cards/${likeId}/likes`, {
       method: "PUT",
       headers: this._headers,
@@ -93,7 +92,6 @@ class Api {
 
   //отправить DELETE-запрос лайка
   deleteLike(likeId) {
-    console.log("убрать");
     return fetch(`${this._url}/cards/${likeId}/likes`, {
       method: "DELETE",
       headers: this._headers,

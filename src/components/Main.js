@@ -1,4 +1,4 @@
-import React from "react";
+import { useContext } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { CardContext } from "../contexts/CurrentUserContext";
 
@@ -13,8 +13,8 @@ function Main({
   onCardClick,
   textSabmitBtn,
 }) {
-  const currentUser = React.useContext(CurrentUserContext);
-  const cards = React.useContext(CardContext);
+  const currentUser = useContext(CurrentUserContext);
+  const cards = useContext(CardContext);
 
   return (
     <>
