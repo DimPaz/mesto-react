@@ -1,4 +1,37 @@
-function Card({ card, name, link, count, onCardClick }) {
+import React from "react";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
+
+function Card({
+  card,
+  name,
+  link,
+  count,
+  onCardDelete,
+  onCardLike,
+  onCardClick,
+}) {
+  const currentUser = React.useContext(CurrentUserContext);
+
+  // отображение корзинки
+  const isOwn = card.owner._id === currentUser._id;
+  const cardDeleteButtonClassName = `element__trash ${
+    isOwn ? "element__trash_visible" : ""
+  }`;
+
+  // отображение лайка
+  const isLiked = card.likes.some((i) => i._id === currentUser._id);
+  const cardLikeButtonClassName = `element__like ${
+    isLiked ? "element__like_active" : ""
+  }`;
+
+  function handleClickDelete() {
+    onCardDelete(card);
+  }
+
+  function handleClickLike() {
+    onCardLike(card);
+  }
+
   function handleClick() {
     {
       onCardClick(card);
@@ -16,16 +49,18 @@ function Card({ card, name, link, count, onCardClick }) {
         />
         <div className="element__group">
           <button
-            className="element__trash element__trash_visible"
+            className={`element__trash ${cardDeleteButtonClassName}`}
             type="button"
             aria-label="Убрать в корзину"
+            onClick={handleClickDelete}
           ></button>
           <h2 className="element__text">{name}</h2>
           <div className="element__like-parts">
             <button
-              className="element__like"
+              className={`element__like ${cardLikeButtonClassName}`}
               type="button"
               aria-label="Нравится"
+              onClick={handleClickLike}
             ></button>
             <span className="element__count">{count}</span>
           </div>

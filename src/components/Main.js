@@ -1,35 +1,30 @@
-import { useState, useEffect } from "react";
+import React from "react";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import { CardContext } from "../contexts/CurrentUserContext";
 
 import Card from "./Card";
-import api from "../utils/Api.js";
 
 function Main({
   onEditAvatar,
   onEditProfile,
   onAddPlace,
+  onCardDelete,
+  onCardLike,
   onCardClick,
   textSabmitBtn,
 }) {
-  const [userName, setUserName] = useState([]);
-  const [userDescription, setUserDescription] = useState([]);
-  const [userAvatar, setUserAvatar] = useState([]);
-  const [cards, setCards] = useState([]);
-
-  useEffect(() => {
-    api.getAllData().then(([data, user]) => {
-      setUserName(user.name);
-      setUserDescription(user.about);
-      setUserAvatar(user.avatar);
-      setCards(data);
-    });
-  }, []);
+  const currentUser = React.useContext(CurrentUserContext);
+  const cards = React.useContext(CardContext);
 
   return (
     <>
       <main className="main">
         <section className="profile">
-          <img className="profile__avatar" src={userAvatar} alt="фото" />
-
+          <img
+            className="profile__avatar"
+            src={currentUser.avatar}
+            alt="фото"
+          />
           <button
             className="profile__avatar-btn"
             type="button"
@@ -37,14 +32,14 @@ function Main({
           ></button>
           <div className="profile__group">
             <div className="profile__info">
-              <h1 className="profile__name">{userName}</h1>
+              <h1 className="profile__name">{currentUser.name}</h1>
               <button
                 className="profile__edit-btn opacity"
                 type="button"
                 onClick={onEditProfile}
               ></button>
             </div>
-            <p className="profile__profession">{userDescription}</p>
+            <p className="profile__profession">{currentUser.about}</p>
           </div>
           <button
             className="profile__add-btn opacity"
@@ -63,6 +58,8 @@ function Main({
                 count={item.likes.length}
                 onCardClick={onCardClick}
                 textSabmitBtn={textSabmitBtn}
+                onCardDelete={onCardDelete}
+                onCardLike={onCardLike}
               />
             );
           })}

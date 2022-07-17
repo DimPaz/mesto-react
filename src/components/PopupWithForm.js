@@ -1,5 +1,12 @@
-function PopupWithForm({ name, title, children, isOpen, onClose, textSabmitBtn }) {
- 
+function PopupWithForm({
+  name,
+  title,
+  children,
+  isOpen,
+  onClose,
+  onSabmit,
+  textSabmitBtn,
+}) {
   function closePopupOnOverlay(event) {
     if (event.target === event.currentTarget) {
       onClose();
@@ -22,6 +29,7 @@ function PopupWithForm({ name, title, children, isOpen, onClose, textSabmitBtn }
             action="#"
             method="get"
             noValidate
+            onSubmit={onSabmit}
           >
             <button
               className={`popup__close-btn popup__close-btn_type_${name} opacity`}
