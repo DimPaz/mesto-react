@@ -21,22 +21,46 @@ function App() {
 
   const [selectedCard, setSelectedCard] = useState({});
 
-  const [currentUser, setCurrentUser] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
+  const isOpen =
+    isEditAvatarPopupOpen ||
+    isEditProfilePopupOpen ||
+    isAddPlacePopupOpen ||
+    setImageCardPopupOpen;
 
   useEffect(() => {
-    api.getAllData().then(([data, user]) => {
-      setCurrentUser(user);
-      setCards(data);
-    });
+    api
+      .getAllData()
+      .then(([data, user]) => {
+        setCurrentUser(user);
+        setCards(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
+
+  //закрытие попапов на ESC
+  useEffect(() => {
+    function closeByEscape(evt) {
+      if (evt.key === "Escape") {
+        closeAllPopups();
+      }
+    }
+    if (isOpen) {
+      document.addEventListener("keydown", closeByEscape);
+      return () => {
+        document.removeEventListener("keydown", closeByEscape);
+      };
+    }
+  }, [isOpen]);
 
   function handleCardDelete(card) {
     api
       .deleteCard(card._id)
       .then(() => {
-        const newArrayCards = cards.filter((item) => item._id !== card._id);
-        setCards(newArrayCards);
+        setCards((state) => state.filter((item) => item._id !== card._id));
       })
       .catch((err) => {
         console.log(err);
@@ -95,7 +119,11 @@ function App() {
     setImageCardPopupOpen(false);
   }
 
+  const [isLoading, setIsLoading] = useState(false);
+  // console.log(isLoading)
+
   function handleUpdateAvatar({ avatar }) {
+    setIsLoading(true);
     api
       .addAvatar(avatar)
       .then((data) => {
@@ -104,10 +132,14 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }
 
   function handleUpdateUser({ name, about }) {
+    setIsLoading(true);
     api
       .addUserInfo(name, about)
       .then((data) => {
@@ -116,10 +148,14 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }
 
   function handleAddPlaceSubmit({ name, link }) {
+    setIsLoading(true);
     api
       .addCard({ name, link })
       .then((newCard) => {
@@ -128,55 +164,59 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }
 
   return (
-    <>
-      <CurrentUserContext.Provider value={currentUser}>
-        <CardContext.Provider value={cards}>
-          <div className="page">
-            <Header />
-            <Main
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddPlaceClick}
-              onEditAvatar={handleEditAvatarClick}
-              onCardDelete={handleCardDelete}
-              onCardLike={handleCardLike}
-              onCardClick={handleCardClick}
-            />
+    <CurrentUserContext.Provider value={currentUser}>
+      <CardContext.Provider value={cards}>
+        <div className="page">
+          <Header />
+          <Main
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onEditAvatar={handleEditAvatarClick}
+            onCardDelete={handleCardDelete}
+            onCardLike={handleCardLike}
+            onCardClick={handleCardClick}
+          />
 
-            <Footer />
-            {/* аватар */}
-            <EditAvatarPopup
-              isOpen={isEditAvatarPopupOpen}
-              onClose={closeAllPopups}
-              onUpdateAvatar={handleUpdateAvatar}
-            />
+          <Footer />
+          {/* аватар */}
+          <EditAvatarPopup
+            isOpen={isEditAvatarPopupOpen}
+            onClose={closeAllPopups}
+            onUpdateAvatar={handleUpdateAvatar}
+            isLoading={isLoading}
+          />
 
-            {/* профиль */}
-            <EditProfilePopup
-              isOpen={isEditProfilePopupOpen}
-              onClose={closeAllPopups}
-              onUpdateUser={handleUpdateUser}
-            />
+          {/* профиль */}
+          <EditProfilePopup
+            isOpen={isEditProfilePopupOpen}
+            onClose={closeAllPopups}
+            onUpdateUser={handleUpdateUser}
+            isLoading={isLoading}
+          />
 
-            {/* карта */}
-            <AddPlacePopup
-              isOpen={isAddPlacePopupOpen}
-              onClose={closeAllPopups}
-              onAddPlace={handleAddPlaceSubmit}
-            />
+          {/* карта */}
+          <AddPlacePopup
+            isOpen={isAddPlacePopupOpen}
+            onClose={closeAllPopups}
+            onAddPlace={handleAddPlaceSubmit}
+            isLoading={isLoading}
+          />
 
-            <ImagePopup
-              isOpen={isImageCardPopupOpen}
-              onClose={closeAllPopups}
-              selectedCard={selectedCard}
-            />
-          </div>
-        </CardContext.Provider>
-      </CurrentUserContext.Provider>
-    </>
+          <ImagePopup
+            isOpen={isImageCardPopupOpen}
+            onClose={closeAllPopups}
+            selectedCard={selectedCard}
+          />
+        </div>
+      </CardContext.Provider>
+    </CurrentUserContext.Provider>
   );
 }
 

@@ -14,37 +14,30 @@ function PopupWithForm({
   }
 
   return (
-    <>
+    <div className={`popup popup_type_${name} ${isOpen ? "popup_opened" : ""}`}>
       <div
-        className={`popup popup_type_${name} ${isOpen ? "popup_opened" : ""}`}
+        className="popup__container"
+        onClick={(event) => closePopupOnOverlay(event)}
       >
-        <div
-          className="popup__container"
-          onClick={(event) => closePopupOnOverlay(event)}
+        <form
+          className="form popup__form"
+          name={`${name}-form`}
+          action="#"
+          onSubmit={onSabmit}
         >
-          <form
-            className="form popup__form"
-            id="editPopupForm"
-            name={`${name}-form`}
-            action="#"
-            method="get"
-            noValidate
-            onSubmit={onSabmit}
-          >
-            <button
-              className={`popup__close-btn popup__close-btn_type_${name} opacity`}
-              type="button"
-              onClick={onClose}
-            ></button>
-            <h3 className="popup__title">{title}</h3>
-            {children}
-            <button className="popup__save-btn" type="submit" name="Сохранить">
-              {textSabmitBtn}
-            </button>
-          </form>
-        </div>
+          <button
+            className={`popup__close-btn popup__close-btn_type_${name} opacity`}
+            type="button"
+            onClick={onClose}
+          ></button>
+          <h3 className="popup__title">{title}</h3>
+          {children}
+          <button className="popup__save-btn" type="submit" name="Сохранить">
+            {textSabmitBtn}
+          </button>
+        </form>
       </div>
-    </>
+    </div>
   );
 }
 

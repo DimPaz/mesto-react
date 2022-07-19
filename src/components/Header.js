@@ -1,10 +1,8 @@
 function Header() {
   return (
-    <>
-      <header className="header">
-        <a className="logo" href="#"></a>
-      </header>
-    </>
+    <header className="header">
+      <a className="logo" href="#"></a>
+    </header>
   );
 }
 

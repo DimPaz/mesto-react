@@ -39,34 +39,32 @@ function Card({
   }
 
   return (
-    <>
-      <article className="element">
-        <img
-          className="element__picture"
-          src={link}
-          alt={name}
-          onClick={handleClick}
-        />
-        <div className="element__group">
+    <article className="element">
+      <img
+        className="element__picture"
+        src={link}
+        alt={name}
+        onClick={handleClick}
+      />
+      <div className="element__group">
+        <button
+          className={`element__trash ${cardDeleteButtonClassName}`}
+          type="button"
+          aria-label="Убрать в корзину"
+          onClick={handleClickDelete}
+        ></button>
+        <h2 className="element__text">{name}</h2>
+        <div className="element__like-parts">
           <button
-            className={`element__trash ${cardDeleteButtonClassName}`}
+            className={`element__like ${cardLikeButtonClassName}`}
             type="button"
-            aria-label="Убрать в корзину"
-            onClick={handleClickDelete}
+            aria-label="Нравится"
+            onClick={handleClickLike}
           ></button>
-          <h2 className="element__text">{name}</h2>
-          <div className="element__like-parts">
-            <button
-              className={`element__like ${cardLikeButtonClassName}`}
-              type="button"
-              aria-label="Нравится"
-              onClick={handleClickLike}
-            ></button>
-            <span className="element__count">{count}</span>
-          </div>
+          <span className="element__count">{count}</span>
         </div>
-      </article>
-    </>
+      </div>
+    </article>
   );
 }
 
