@@ -27,7 +27,7 @@ function App() {
     isEditAvatarPopupOpen ||
     isEditProfilePopupOpen ||
     isAddPlacePopupOpen ||
-    setImageCardPopupOpen;
+    isImageCardPopupOpen;
 
   useEffect(() => {
     api

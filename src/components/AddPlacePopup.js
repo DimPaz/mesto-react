@@ -1,28 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useForm } from "../hooks/useForm";
 import PopupWithForm from "./PopupWithForm";
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
-  const [nameCard, setNameCard] = useState("");
-  const [link, setLink] = useState("");
   const buttonText = `${isLoading ? "Создние..." : "Создать"}`;
 
-  useEffect(() => {
-    setNameCard("");
-    setLink("");
-  }, [isOpen]);
+  const { values, handleChange, setValues } = useForm({});
 
-  function handleChangeNameCard(e) {
-    setNameCard(e.target.value);
-  }
-  function handleChangeLink(e) {
-    setLink(e.target.value);
-  }
+  useEffect(() => {
+    setValues({});
+  }, [isOpen, setValues]);
 
   function handleSubmit(e) {
     e.preventDefault();
     onAddPlace({
-      name: nameCard,
-      link,
+      name: values.name,
+      link: values.link,
     });
   }
 
@@ -45,8 +38,8 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
           minLength="2"
           maxLength="30"
           required
-          value={nameCard}
-          onChange={handleChangeNameCard}
+          value={values.name || ""}
+          onChange={handleChange}
         />
         <span id="signature-input-error" className="form__input-error"></span>
       </label>
@@ -58,8 +51,8 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
           name="link"
           placeholder="Ссылка на картинку"
           required
-          value={link}
-          onChange={handleChangeLink}
+          value={values.link || ""}
+          onChange={handleChange}
         />
         <span id="link-image-input-error" className="form__input-error"></span>
       </label>
